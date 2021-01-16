@@ -1,3 +1,5 @@
+from browser import document
+
 def calc(a, b, o):
   d = {'+': a + b,
        '-': a - b,
