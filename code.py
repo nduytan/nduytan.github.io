@@ -7,7 +7,7 @@ from browser.widgets.dialog import InfoDialog
 lat = ""
 lng = ""
 api = "bdfb5671e56189cb2073ef6a0b99a523"
-url = "http://api.openweathermap.org/data/2.5/weather"
+url = "https://api.openweathermap.org/data/2.5/weather"
 
 def on_complete(req):
    if req.status == 200 or req.status == 0:
