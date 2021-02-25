@@ -1,41 +1,97 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brython</title>
-
-  <script
-    type="text/javascript"
-    src="https://cdn.jsdelivr.net/npm/brython@3.8.9/brython.min.js">
+  <meta charset="utf-8">
+  <title>Add a geocoder</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.0/brython.min.js">
   </script>
-
-  <script
-    type="text/javascript"
-    src="https://cdn.jsdelivr.net/npm/brython@3.8.9/brython_stdlib.js">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.0/brython_stdlib.min.js">
   </script>
-
-  <link
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-    crossorigin="anonymous">
-
-</head>
-  <body onload="brython()">
-
-    <style>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <style>
     body {
-        /* background-color: yellow; */
-        background-image: url(https://images.unsplash.com/photo-1573196872258-41425124bf5d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80);
-/*         background-repeat: no-repeat; */
+      margin: 0;
+      padding: 0;
     }
-    </style>
+
+    .mapboxgl-marker {
+      height: 20px;
+      width: 20px;
+      z-index: 5;
+      border: 1px solid black;
+      border-radius: 50%;
+      background-color: #305bad;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body onload="brython()">
+  <script type="text/python" src="code.py"></script>
+  <script
+    src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+  <link rel="stylesheet"
+    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css">
+  <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+  <div id="map" class="tan"></div>
+
+  <input hidden type="text" class="form-control" id="lat">
+  <input hidden type="text" class="form-control" id="marker-test">
+  <input hidden type="text" class="form-control" id="url">
 
 
-<script type="text/python" src="code.py">
-</script>
-    
-  </body>
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoidGFubmQiLCJhIjoiY2s0bTR3eHI4MDF6cjNrczM2cGY0MzJrdiJ9.RThbXMK8McEY_fAG3fMPuQ';
+    var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [-79.4512, 43.6568],
+      zoom: 13
+    });
+
+    map.on('click', function (e) {
+      $("#marker-test").remove();
+      var coords = `lat: ${e.lngLat.lat} <br> lng: ${e.lngLat.lng}`;
+      // create the popup
+      var popup = new mapboxgl.Popup().setText(coords);
+      // create DOM element for the marker
+      var el = document.createElement('div');
+      el.id = 'marker-test';
+      // create the marker
+      //console.log(e.lngLat);
+      var weatherAPI = "bdfb5671e56189cb2073ef6a0b99a523";
+      var lat = "11.063078488967657";
+      var long = "106.67417764663696";
+      var url = "http://api.openweathermap.org/data/2.5/weather?lat=" + e.lngLat.lat + "&lon=" + e.lngLat.lng + "&appid=" + weatherAPI;
+      $("#url").val(url);
+
+
+      new mapboxgl.Marker(el)
+        .setLngLat(e.lngLat)
+        .setPopup(popup)
+        .addTo(map);
+    });
+
+    map.addControl(
+      new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl
+      })
+    );
+  </script>
+
+</body>
+
 </html>
