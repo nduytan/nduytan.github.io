@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Ứng dụng tính lương tháng 13</title>
+	<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="style.bundle.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+		integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+		crossorigin="anonymous"></script>
+	<script type="text/javascript" src="js/dynamic-form.js"></script>
+	<style>
+		.container {
+			margin: 150px auto;
+		}
+
+		h1 {
+			margin-bottom: 50px;
+		}
+
+		.hideDiv {
+			display: none;
+		}
+
+		.showDiv {
+			display: block;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="text-center pb-10">
+		<h1 class="display-4 font-weight-boldest mb-10">Ứng dụng tính lương tháng 13</h1>
+<p>Lương tháng 13 = (Số tháng làm việc trong năm / 12) * Lương cơ bản </p>
+<p>Nếu nhân viên xếp hạng A: Thưởng thêm 1.000.000 </p>
+<p>Nếu nhân viên xếp hạng B: Thưởng thêm 500.000 </p>
+		</div>
+		
+		<form method="POST">
+			<div class="form-group" id="dynamic_form">
+				<div class="row" style="align-items: center">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Nhập tên</label>
+							<input type="text" name="fullName" id="fullName" placeholder="Nhập họ tên"
+								class="form-control">
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label>Số tháng làm việc</label>
+							<select class="form-control" name="countMonth" id="countMonth">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+							</select>
+						</div>
+
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label>Lương cơ bản</label>
+							<input class="form-control" type="number" rows="1" name="salary" placeholder="Lương cơ bản"
+								id="salary"></input>
+						</div>
+
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label>Xếp loại</label>
+							<select class="form-control" name="classification" id="classification">
+								<option value="A">A</option>
+								<option value="B">B</option>
+								<option value="C">C</option>
+							</select>
+						</div>
+
+					</div>
+					<div class="button-group">
+						<a href="javascript:void(0)" class="btn btn-primary" id="plus5">Thêm</a>
+						<a href="javascript:void(0)" class="btn btn-danger" id="minus5">Xoá</a>
+					</div>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary">Tính</button>
+		</form>
+		<div class="flex-row-fluid mt-5 hideDiv" id="resultDiv">
+			<!--begin::Card-->
+			<div class="card card-custom gutter-b">
+				<div class="card-body p-0">
+					<!-- begin: Invoice-->
+					<!-- begin: Invoice header-->
+					<div class="row justify-content-center">
+						<div class="col-md-10 mt-10">
+							<div class="d-flex justify-content-between flex-column flex-md-row ">
+								<h1 class="display-4 font-weight-boldest mb-10">Phiếu lương tháng 13</h1>
+							</div>
+						</div>
+					</div>
+					<!-- end: Invoice header-->
+					<!-- begin: Invoice body-->
+					<div class="row justify-content-center">
+						<div class="col-md-10">
+							<div class="table-responsive">
+								<table class="table" id="resultTable">
+									<thead>
+										<tr>
+											<th class="pl-0 font-weight-bold text-muted text-uppercase">Họ tên</th>
+											<th class="text-right font-weight-bold text-muted text-uppercase">Tiền
+												thưởng</th>
+										</tr>
+									</thead>
+									<tbody>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<!-- end: Invoice action-->
+					<!-- end: Invoice-->
+				</div>
+			</div>
+			<!--end::Card-->
+		</div>
+	</div>
+	<script>
+		$(document).ready(function () {
+			var dynamic_form = $("#dynamic_form").dynamicForm("#dynamic_form", "#plus5", "#minus5", {
+				limit: 10,
+				formPrefix: "dynamic_form",
+				normalizeFullForm: false
+			});
+			//dynamic_form.inject([{fullName: 'Hemant',countMonth: '123',salary: 'testing remark'},{fullName: 'Harshal',countMonth: '123',salary: 'testing remark'}]);
+
+			$("#dynamic_form #minus5").on('click', function () {
+				var initDynamicId = $(this).closest('#dynamic_form').parent().find("[id^='dynamic_form']").length;
+				if (initDynamicId === 2) {
+					$(this).closest('#dynamic_form').next().find('#minus5').hide();
+				}
+				$(this).closest('#dynamic_form').remove();
+			});
+
+			$('#plus5').on('click', function (event) {
+				var valueInRow = {};
+				console.log($('form').length)
+				event.preventDefault();
+			})
+
+
+			$('form').on('submit', function (event) {
+				var values = {};
+				var length;
+				$.each($('form').serializeArray(), function (i, field) {
+					values[field.name] = field.value;
+				});
+				//console.log(Object.values(values));
+				$.post("https://last-teky-api.herokuapp.com/api/postData", { "data": Object.values(values) }, function (data, status) {
+					var tmp = data;
+					//console.log(data);
+					let jsonData = JSON.parse(data);
+					$.each(jsonData, function (i, item) {
+						$('<tr class="font-weight-boldest">').html(
+							'<td >' + jsonData[i].name + '</td><td class="text-primary pr-0 pt-7 text-right align-middle">' + jsonData[i].bonusMoney.toFixed(1) + "</td>" + "</tr>").appendTo('#resultTable tbody');
+					});
+					$("#resultDiv").removeClass("hideDiv");
+					$("#resultDiv").addClass("showDiv");
+
+
+
+
+				});
+				event.preventDefault();
+			})
+		});
+	</script>
+</body>
+
+</html>
