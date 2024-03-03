@@ -17,7 +17,11 @@
   
 <div class="container">
   <div class="row text-center">
-    <input type="image" src="img_submit.gif" alt="Submit" width="48" height="48">
+    <form action="/action_page.php">
+  <label for="img">Select image:</label>
+  <input type="file" id="img" name="img" accept="image/*">
+  <input type="submit">
+</form>
     <div class="col-sm-6">
       <a target="_blank" href="Weather-Tracker.html" class="btn btn-primary">Dự báo thời tiết</a>
 
