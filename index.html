@@ -1,38 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Index</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flutter WebView</title>
+  <script type="text/javascript">
+    function sendMessageToFlutter() {
+      // Check if Flutter WebView is ready to send a message
+      if (window.FlutterChannel) {
+        window.FlutterChannel.postMessage("Hello from Web!");
+      }
+    }
+  </script>
 </head>
 <body>
-
-<div class="jumbotron text-center">
-  <h1>DEMO ONLY</h1>
-</div>
-  
-<div class="container">
-  <div class="row text-center">
-    <form action="/action_page.php">
-  <label for="img">Select image:</label>
-  <input type="file" id="img" name="img" accept="image/*">
-  <input type="submit">
-</form>
-    <div class="col-sm-6">
-      <a target="_blank" href="Weather-Tracker.html" class="btn btn-primary">Dự báo thời tiết</a>
-
-    </div>
-    <div class="col-sm-6">
-<a href="Salary.html" target="_blank"  class="btn btn-success">Tính lương tháng 13</a>
-    </div>
-    
-  </div>
-</div>
-
+  <h1>Web to Flutter Communication</h1>
+  <button onclick="sendMessageToFlutter()">Send Message to Flutter</button>
 </body>
 </html>
-
