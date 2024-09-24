@@ -6,9 +6,9 @@
   <title>Flutter WebView</title>
   <script type="text/javascript">
     function sendMessageToFlutter() {
-      // Check if Flutter WebView is ready to send a message
-      if (window.FlutterChannel) {
-        window.FlutterChannel.postMessage("Hello from Web!");
+      
+      if (window.postMessage) {
+        window.postMessage.postMessage("Hello from Web!");
       }
     }
   </script>
