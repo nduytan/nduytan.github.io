@@ -6,9 +6,8 @@
   <title>Flutter WebView</title>
   <script type="text/javascript">
     function sendMessageToFlutter() {
-      
-      if (window.postMessage) {
-        window.postMessage.postMessage("Hello from Web!");
+      if (window.testChanel) {
+        window.testChanel.postMessage("abcasdadasd");
       }
     }
   </script>
